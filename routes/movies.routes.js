@@ -50,5 +50,38 @@ router.get("/create", async (req, res) => {
     }
   });
   
+  router.post("/:id/delete", async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      await Movie.findByIdAndRemove(id);
+      res.redirect("/movies");
+    } catch (error) {
+      // Handle the error
+    }
+  });
+  
+  router.get("/:id/edit", async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const movie = await Movie.findById(id);
+      const celebrities = await Celebrity.find();
+      res.render("movies/edit-movie", { movie, celebrities });
+    } catch (error) {
+      // Handle the error
+    }
+  });
+  
+  router.post("/:id", async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      await Movie.findByIdAndUpdate(id, req.body);
+      res.redirect(`/movies/${id}`);
+    } catch (error) {
+      // Handle the error
+    }
+  });
   
 module.exports = router;
