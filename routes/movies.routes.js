@@ -30,4 +30,25 @@ router.get("/create", async (req, res) => {
     }
   });
   
+  router.get("/", async (req, res) => {
+    try {
+      const movies = await Movie.find();
+      res.render("movies/movies", { movies });
+    } catch (error) {
+      // Handle the error
+    }
+  });
+
+  router.get("/:id", async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const movie = await Movie.findById(id).populate("cast");
+      res.render("movies/movie-details", { movie });
+    } catch (error) {
+      // Handle the error
+    }
+  });
+  
+  
 module.exports = router;
